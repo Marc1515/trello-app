@@ -1,9 +1,11 @@
 "use-client";
 
-import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Image from "next/image";
+import { Activity, CreditCard, Layout, Settings } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+
+import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export type Organization = {
   id: string;
@@ -34,7 +36,7 @@ export const NavItem = ({
           isActive && !isExpanded && "bg-sky-500/10 text-sky-700"
         )}
       >
-        <div className="felx items-center gap-x-2">
+        <div className="flex items-center gap-x-2">
           <div className="w-7 h-7 relative">
             <Image
               fill
@@ -43,6 +45,7 @@ export const NavItem = ({
               className="rounded-sm object-cover"
             />
           </div>
+          <span className="font-medium text-sm">{organization.name}</span>
         </div>
       </AccordionTrigger>
     </AccordionItem>
