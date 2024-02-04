@@ -8,7 +8,7 @@ const OrganizationIdPage = () => {
 
     const title = formData.get("title") as string;
 
-    db.board.create({
+    await db.board.create({
       data: {
         title,
       },
