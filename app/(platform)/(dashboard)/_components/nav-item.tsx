@@ -7,7 +7,12 @@ import { Activity, CreditCard, Layout, Settings } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 export type Organization = {
   id: string;
@@ -55,6 +60,10 @@ export const NavItem = ({
     },
   ];
 
+  const onClick = (href: string) => {
+    router.push(href);
+  };
+
   return (
     <AccordionItem value={organization.id} className="border-none">
       <AccordionTrigger
@@ -76,6 +85,25 @@ export const NavItem = ({
           <span className="font-medium text-sm">{organization.name}</span>
         </div>
       </AccordionTrigger>
+      <AccordionContent className="pt-1 text-neutral-700">
+        {routes.map((route) => (
+          <Button
+            key={route.href}
+            size={"sm"}
+            onClick={() => {
+              onClick(route.href);
+            }}
+            className={cn(
+              "w-full font-normal justify-start pl-10 mb-1",
+              pathname === route.href && "bg-sky-500/10 text-sky-700"
+            )}
+            variant={"ghost"}
+          >
+            {route.icon}
+            {route.label}
+          </Button>
+        ))}
+      </AccordionContent>
     </AccordionItem>
   );
 };
