@@ -1,5 +1,3 @@
-"use client";
-
 import { db } from "@/lib/db";
 
 const OrganizationIdPage = () => {
