@@ -28,7 +28,7 @@ export async function create(prevState: State, formData: FormData) {
     if(!validateFields.success) {
       return {
         errors: validateFields.error.flatten().fieldErrors,
-        messsage: "Missing Fields"
+        message: "Missing Fields"
       }
     }
 
