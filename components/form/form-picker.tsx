@@ -7,6 +7,7 @@ import { useFormStatus } from "react-dom";
 
 import { cn } from "@/lib/utils";
 import { unsplash } from "@/lib/unsplash";
+import { defaultImages } from "@/constants/images";
 
 interface FormPickerPorps {
   id: string;
@@ -36,7 +37,7 @@ export const FormPicker = ({ id, errors }: FormPickerPorps) => {
         }
       } catch (error) {
         console.log(error);
-        setImages([]);
+        setImages(defaultImages);
       } finally {
         setIsLoading(false);
       }
