@@ -2,24 +2,26 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Check, Loader2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
+import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { unsplash } from "@/lib/unsplash";
-
 import { defaultImages } from "@/constants/images";
 
-interface FormPickerPorps {
+import { FormErrors } from "./form-errors";
+
+interface FormPickerProps {
   id: string;
   errors?: Record<string, string[] | undefined>;
 }
 
-export const FormPicker = ({ id, errors }: FormPickerPorps) => {
-  const pending = useFormStatus();
+export const FormPicker = ({ id, errors }: FormPickerProps) => {
+  const { pending } = useFormStatus();
 
-  const [images, setImages] = useState<Array<Record<string, any>>>([]);
+  const [images, setImages] =
+    useState<Array<Record<string, any>>>(defaultImages);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImageId, setSelectedImageId] = useState(null);
 
@@ -44,6 +46,7 @@ export const FormPicker = ({ id, errors }: FormPickerPorps) => {
         setIsLoading(false);
       }
     };
+
     fetchImages();
   }, []);
 
@@ -72,10 +75,15 @@ export const FormPicker = ({ id, errors }: FormPickerPorps) => {
           >
             <Image
               src={image.urls.thumb}
-              alt="unsplash image"
+              alt="Unsplash image"
               className="object-cover rounded-sm"
               fill
             />
+            {selectedImageId === image.id && (
+              <div className="absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center">
+                <Check className="h-4 w-4 text-white" />
+              </div>
+            )}
             <Link
               href={image.links.html}
               target="_blank"
@@ -86,6 +94,7 @@ export const FormPicker = ({ id, errors }: FormPickerPorps) => {
           </div>
         ))}
       </div>
+      <FormErrors id="image" errors={errors} />
     </div>
   );
 };
