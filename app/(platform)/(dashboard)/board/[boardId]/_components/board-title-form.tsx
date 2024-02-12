@@ -28,9 +28,18 @@ export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
     setIsEding(false);
   };
 
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    console.log("I am submitted");
+  };
+
   if (isEditing) {
     return (
-      <form className="flex items-center gap-x-2">
+      <form
+        action={onSubmit}
+        ref={formRef}
+        className="flex items-center gap-x-2"
+      >
         <FormInput
           ref={inputRef}
           id="title"
