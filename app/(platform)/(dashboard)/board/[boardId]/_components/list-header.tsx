@@ -9,6 +9,7 @@ import { useState, useEffect, ElementRef, useRef } from "react";
 import { FormInput } from "@/components/form/form-input";
 import { useAction } from "@/hooks/use-action";
 import { updateList } from "@/actions/update-list";
+import { ListOptions } from "./list-options";
 
 interface ListHeaderProps {
   data: List;
@@ -82,7 +83,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
             defaultValue={title}
             className="text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparet focus:bg-white"
           />
-          <button type="submit" hidden/>
+          <button type="submit" hidden />
         </form>
       ) : (
         <div
@@ -92,6 +93,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
           {title}
         </div>
       )}
+      <ListOptions onAddCard={() => {}} data={data} />
     </div>
   );
 };
