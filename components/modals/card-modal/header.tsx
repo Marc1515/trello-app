@@ -46,10 +46,10 @@ export const Header = ({ data }: HeaderProps) => {
     const title = formData.get("title") as string;
     const boardId = params.boardId as string;
 
+    if (title === data.title) return;
+
     execute({ title, boardId, id: data.id });
   };
-
-  if (title === data.title) return;
 
   return (
     <div className="flex items-start gap-x-3 mb-6 w-full">
