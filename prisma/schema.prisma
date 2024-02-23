@@ -62,7 +62,7 @@ enum ACTION {
 }
 
 enum ENTITY_TYPE {
-  BORAD
+  BOARD
   LIST
   CARD
 }
