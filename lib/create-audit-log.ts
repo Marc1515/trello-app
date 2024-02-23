@@ -10,7 +10,7 @@ interface Props {
   action: ACTION;
 }
 
-export const CreateAuditLog = async (props: Props) => {
+export const createAuditLog = async (props: Props) => {
   try {
     const { orgId } = auth();
     const user = await currentUser();
