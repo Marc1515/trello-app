@@ -12,8 +12,11 @@ import { redirect } from "next/navigation";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 import { decreaseAvaibleCount } from "@/lib/org-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
+  const isPro = await checkSubscription();
+
   const { userId, orgId } = auth();
 
   if (!userId || !orgId) {
@@ -33,7 +36,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
 
-    await decreaseAvaibleCount();
+    if (!isPro) {
+      await decreaseAvaibleCount();
+    }
 
     await createAuditLog({
       entityTitle: board.title,
