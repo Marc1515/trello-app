@@ -66,7 +66,7 @@ export const FormPopover = ({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className="w-80 pt-3"
+        className="absolute w-80 pt-3"
         side={side}
         sideOffset={sideOffSet}
       >
