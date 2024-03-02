@@ -24,7 +24,7 @@ export const Navbar = () => {
             Create
           </Button>
         </FormPopover>
-        <FormPopover>
+        <FormPopover align="start" side="bottom" sideOffSet={18}>
           <Button
             variant={"primary"}
             size={"sm"}
