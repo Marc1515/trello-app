@@ -48,12 +48,13 @@ export const BoardList = async () => {
             <p className="relative font-semibold text-white">{board.title}</p>
           </Link>
         ))}
+        {/* Mobile Screen */}
         <FormPopover align="start" side="bottom" sideOffSet={10}>
           <div
             role="button"
             className="aspect-video relative h-full w-full bg-muted rounded-sm flex md:hidden flex-col gap-y-1 items-center justify-center hover:opacity-75 transition"
           >
-            <p className="text-sm">Create new boarddddd</p>
+            <p className="text-sm">Create new board</p>
             <span className="text-xs">
               {isPro
                 ? "Unlimited"
@@ -67,6 +68,9 @@ export const BoardList = async () => {
             </Hint>
           </div>
         </FormPopover>
+        {/* Mobile Screen */}
+
+        {/* Wider Screens */}
         <FormPopover sideOffSet={10} side="right">
           <div
             role="button"
@@ -86,6 +90,7 @@ export const BoardList = async () => {
             </Hint>
           </div>
         </FormPopover>
+        {/* Wider Screens */}
       </div>
     </div>
   );
