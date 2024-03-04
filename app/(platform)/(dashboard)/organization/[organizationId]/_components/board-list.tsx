@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { HelpCircle, User2 } from "lucide-react";
+import { HelpCircle, User2, X } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { Hint } from "@/components/hint";
@@ -45,7 +45,12 @@ export const BoardList = async () => {
             style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
           >
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
-            <p className="relative font-semibold text-white">{board.title}</p>
+            <div className="flex justify-between">
+              <p className="relative font-semibold text-white">{board.title}</p>
+              <button>
+                <X className="text-white" />
+              </button>
+            </div>
           </Link>
         ))}
         {/* Mobile Screen */}
