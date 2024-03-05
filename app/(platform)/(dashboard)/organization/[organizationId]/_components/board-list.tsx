@@ -1,7 +1,9 @@
+import { Board } from "@prisma/client";
+
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { HelpCircle, User2, X } from "lucide-react";
+import { HelpCircle, User2 } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { Hint } from "@/components/hint";
@@ -11,7 +13,13 @@ import { MAX_FREE_BOARDS } from "@/constants/boards";
 import { getAvailableCount } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
 
-export const BoardList = async () => {
+import { BoardOptions } from "../../../board/[boardId]/_components/board-options";
+
+interface BoardListProps {
+  data: Board;
+}
+
+export const BoardList = async ({ data }: BoardListProps) => {
   const { orgId } = auth();
 
   if (!orgId) {
@@ -38,20 +46,20 @@ export const BoardList = async () => {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {boards.map((board) => (
-          <Link
-            key={board.id}
-            href={`/board/${board.id}`}
-            className="group relative aspect-video bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
-            style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
-          >
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
-            <div className="flex justify-between">
+          <div key={board.id} className="flex flex-col">
+            <div className="absolute flex flex-row justify-between z-50">
               <p className="relative font-semibold text-white">{board.title}</p>
-              <button>
-                <X className="text-white" />
-              </button>
+              <BoardOptions id={board.id} />
             </div>
-          </Link>
+
+            <Link
+              href={`/board/${board.id}`}
+              className="group relative aspect-video bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
+              style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
+            >
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
+            </Link>
+          </div>
         ))}
         {/* Mobile Screen */}
         <FormPopover align="start" side="bottom" sideOffSet={10}>
