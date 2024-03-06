@@ -1,5 +1,3 @@
-import { Board } from "@prisma/client";
-
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -15,11 +13,7 @@ import { checkSubscription } from "@/lib/subscription";
 
 import { BoardOptions } from "../../../board/[boardId]/_components/board-options";
 
-interface BoardListProps {
-  data: Board;
-}
-
-export const BoardList = async ({ data }: BoardListProps) => {
+export const BoardList = async () => {
   const { orgId } = auth();
 
   if (!orgId) {
