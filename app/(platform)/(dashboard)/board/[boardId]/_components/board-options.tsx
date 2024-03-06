@@ -14,20 +14,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
 
-interface BoardOptionsProps {
+/* interface BoardOptionsProps {
   id: string;
-}
+} */
 
-export const BoardOptions = ({ id }: BoardOptionsProps) => {
-  const { execute, isLoading } = useAction(deleteBoard, {
+export const BoardOptions = (/* { id }: BoardOptionsProps */) => {
+  const deleteBoardModal = useDeleteBoardModal();
+
+  /*  const { execute, isLoading } = useAction(deleteBoard, {
     onError: (error) => {
       toast.error(error);
     },
-  });
+  }); */
 
-  const onDelete = () => {
-    execute({ id });
+  const onOpenDelete = () => {
+    deleteBoardModal.onOpen();
   };
 
   return (
@@ -51,8 +54,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
         </PopoverClose>
         <Button
           variant={"ghost"}
-          onClick={onDelete}
-          disabled={isLoading}
+          onClick={onOpenDelete}
           className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
         >
           Delete this board
