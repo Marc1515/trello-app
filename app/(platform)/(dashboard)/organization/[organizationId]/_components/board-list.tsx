@@ -40,9 +40,9 @@ export const BoardList = async () => {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {boards.map((board) => (
-          <div key={board.id} className="flex flex-col">
-            <div className="absolute flex flex-row justify-between z-50">
-              <p className="relative font-semibold text-white">{board.title}</p>
+          <div key={board.id} className="flex flex-col aspect-video relative">
+            <div className="flex justify-between items-center absolute z-10 w-full p-1">
+              <p className="font-semibold text-white pl-1">{board.title}</p>
               <BoardOptions id={board.id} />
             </div>
 
