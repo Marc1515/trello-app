@@ -8,9 +8,10 @@ import {
   DialogHeader,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
 import { Button } from "@/components/ui/button";
 import { deleteBoard } from "@/actions/delete-board";
+
+import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
 import { useAction } from "@/hooks/use-action";
 
 export const DeleteBoardModal = () => {
@@ -37,7 +38,8 @@ export const DeleteBoardModal = () => {
       <DialogContent className="max-w-xs sm:max-w-md rounded-sm text-neutral-700">
         <DialogHeader>
           <p className="py-3 pt-7 sm:pt-4">
-            Are you absolutely sure to delete this board?
+            Are you absolutely sure to delete{" "}
+            <span className="font-bold">{deleteBoardModal.title}</span>?
           </p>
         </DialogHeader>
         <div className="flex justify-center gap-4">
