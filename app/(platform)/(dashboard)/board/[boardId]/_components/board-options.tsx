@@ -16,21 +16,18 @@ import {
 } from "@/components/ui/popover";
 import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
 
-/* interface BoardOptionsProps {
+interface BoardOptionsProps {
   id: string;
-} */
+}
 
-export const BoardOptions = (/* { id }: BoardOptionsProps */) => {
+export const BoardOptions = ({ id }: BoardOptionsProps) => {
   const deleteBoardModal = useDeleteBoardModal();
 
-  /*  const { execute, isLoading } = useAction(deleteBoard, {
-    onError: (error) => {
-      toast.error(error);
-    },
-  }); */
+  const boardId = id;
 
   const onOpenDelete = () => {
-    deleteBoardModal.onOpen();
+    console.log(boardId);
+    deleteBoardModal.onOpen(boardId);
   };
 
   return (
