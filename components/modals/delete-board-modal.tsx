@@ -2,7 +2,12 @@
 
 import { toast } from "sonner";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
 import { Button } from "@/components/ui/button";
 import { deleteBoard } from "@/actions/delete-board";
@@ -29,11 +34,25 @@ export const DeleteBoardModal = () => {
       open={deleteBoardModal.isOpen}
       onOpenChange={() => deleteBoardModal.onClose()}
     >
-      <DialogContent className="max-w-md">
-        <p>Are you absolutely sure to delete this board?</p>
-        <Button onClick={onDelete} disabled={isLoading} variant={"destructive"}>
-          Delete
-        </Button>
+      <DialogContent className="max-w-xs sm:max-w-md rounded-sm text-neutral-700">
+        <DialogHeader>
+          <p className="py-3 pt-7 sm:pt-4">
+            Are you absolutely sure to delete this board?
+          </p>
+        </DialogHeader>
+        <div className="flex justify-center gap-4">
+          <Button
+            className="max-w-20"
+            onClick={onDelete}
+            disabled={isLoading}
+            variant={"destructive"}
+          >
+            Delete
+          </Button>
+          <DialogClose className="max-w-20">
+            <Button variant={"outline"}>Cancel</Button>
+          </DialogClose>
+        </div>
       </DialogContent>
     </Dialog>
   );
