@@ -43,7 +43,7 @@ export const BoardList = async () => {
           <div key={board.id} className="flex flex-col aspect-video relative">
             <div className="flex justify-between items-center absolute z-10 w-full p-1">
               <p className="font-semibold text-white pl-1">{board.title}</p>
-              <BoardOptions id={board.id} />
+              <BoardOptions id={board.id} title={board.title} />
             </div>
 
             <Link
