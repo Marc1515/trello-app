@@ -26,7 +26,6 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
   const boardId = id;
 
   const onOpenDelete = () => {
-    console.log(boardId);
     deleteBoardModal.onOpen(boardId);
   };
 
