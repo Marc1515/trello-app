@@ -8,12 +8,8 @@ import { Button } from "@/components/ui/button";
 import { deleteBoard } from "@/actions/delete-board";
 import { useAction } from "@/hooks/use-action";
 
-interface DeleteBoardModalProps {
-  id: string;
-}
-
-export const DeleteBoardModal = ({ id }: DeleteBoardModalProps) => {
-  const deleteModal = useDeleteBoardModal();
+export const DeleteBoardModal = () => {
+  const deleteBoardModal = useDeleteBoardModal();
 
   const { execute, isLoading } = useAction(deleteBoard, {
     onError: (error) => {
@@ -21,13 +17,18 @@ export const DeleteBoardModal = ({ id }: DeleteBoardModalProps) => {
     },
   });
 
-  const onDelete = () => {
-    console.log(id);
-    execute({ id });
+  const onDelete = async () => {
+    if (deleteBoardModal.id) {
+      await execute({ id: deleteBoardModal.id });
+      deleteBoardModal.onClose();
+    }
   };
 
   return (
-    <Dialog open={deleteModal.isOpen} onOpenChange={deleteModal.onClose}>
+    <Dialog
+      open={deleteBoardModal.isOpen}
+      onOpenChange={() => deleteBoardModal.onClose()}
+    >
       <DialogContent className="max-w-md">
         <p>Are you absolutely sure to delete this board?</p>
         <Button onClick={onDelete} disabled={isLoading} variant={"destructive"}>
