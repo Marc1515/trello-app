@@ -1,32 +1,27 @@
 "use client";
 
-import { toast } from "sonner";
-
 import { MoreHorizontal, X } from "lucide-react";
 
-import { deleteBoard } from "@/actions/delete-board";
-import { useAction } from "@/hooks/use-action";
 import { Button } from "@/components/ui/button";
-
 import {
   Popover,
   PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
 
 interface BoardOptionsProps {
   id: string;
+  title: string;
 }
 
-export const BoardOptions = ({ id }: BoardOptionsProps) => {
+export const BoardOptions = ({ id, title }: BoardOptionsProps) => {
   const deleteBoardModal = useDeleteBoardModal();
 
-  const boardId = id;
-
   const onOpenDelete = () => {
-    deleteBoardModal.onOpen(boardId);
+    deleteBoardModal.onOpen(id, title);
   };
 
   return (
