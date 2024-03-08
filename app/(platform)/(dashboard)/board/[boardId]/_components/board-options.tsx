@@ -11,17 +11,17 @@ import {
 } from "@/components/ui/popover";
 
 import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
+import { Board } from "@prisma/client";
 
 interface BoardOptionsProps {
-  id: string;
-  title: string;
+  data: Board;
 }
 
-export const BoardOptions = ({ id, title }: BoardOptionsProps) => {
+export const BoardOptions = ({ data }: BoardOptionsProps) => {
   const deleteBoardModal = useDeleteBoardModal();
 
   const onOpenDelete = () => {
-    deleteBoardModal.onOpen(id, title);
+    deleteBoardModal.onOpen(data);
   };
 
   return (

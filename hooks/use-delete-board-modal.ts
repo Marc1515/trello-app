@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
+import { Board } from "@prisma/client";
+
 type DeleteBoardModalStore = {
-  id?: string;
-  title?: string;
+  data?: Board;
   isOpen: boolean;
-  onOpen: (id: string, title: string) => void;
+  onOpen: (data: Board) => void;
   onClose: () => void;
 };
 
 export const useDeleteBoardModal = create<DeleteBoardModalStore>((set) => ({
-  id: undefined,
-  title: undefined,
+  data: undefined,
   isOpen: false,
-  onOpen: (id: string, title: string) => set({ isOpen: true, id, title }),
-  onClose: () => set({ isOpen: false, id: undefined }),
+  onOpen: (data: Board) => set({ isOpen: true, data }),
+  onClose: () => set({ isOpen: false, data: undefined }),
 }));

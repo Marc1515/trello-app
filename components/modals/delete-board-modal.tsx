@@ -24,8 +24,8 @@ export const DeleteBoardModal = () => {
   });
 
   const onDelete = async () => {
-    if (deleteBoardModal.id) {
-      await execute({ id: deleteBoardModal.id });
+    if (deleteBoardModal.data?.id) {
+      await execute({ id: deleteBoardModal.data.id });
       deleteBoardModal.onClose();
     }
   };
@@ -39,7 +39,7 @@ export const DeleteBoardModal = () => {
         <DialogHeader>
           <p className="py-3 pt-7 sm:pt-4">
             Are you absolutely sure to delete{" "}
-            <span className="font-bold">{deleteBoardModal.title}</span>?
+            <span className="font-bold">{deleteBoardModal.data?.title}</span>?
           </p>
         </DialogHeader>
         <div className="flex justify-center gap-4">
