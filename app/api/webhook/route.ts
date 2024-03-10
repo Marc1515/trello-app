@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
+import { createDefaultBoardsForNewOrganization } from "@/lib/create-default-boards-for-new-org";
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -43,6 +44,8 @@ export async function POST(req: Request) {
         ),
       },
     });
+
+    await createDefaultBoardsForNewOrganization(session.metadata.orgId);
   }
   if (event.type === "invoice.payment_succeeded") {
     const subscription = await stripe.subscriptions.retrieve(
