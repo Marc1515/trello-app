@@ -44,8 +44,6 @@ export async function POST(req: Request) {
         ),
       },
     });
-
-    await createDefaultBoardsForNewOrganization(session.metadata.orgId);
   }
   if (event.type === "invoice.payment_succeeded") {
     const subscription = await stripe.subscriptions.retrieve(
