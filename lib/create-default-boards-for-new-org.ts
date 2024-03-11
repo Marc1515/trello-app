@@ -2,6 +2,9 @@ import { defaultBoardImages } from "@/constants/defaultBoardImages";
 import { db } from "./db";
 
 export const createDefaultBoardsForNewOrganization = async (orgId: string) => {
+  console.log(
+    `Iniciando la creación de tableros por defecto para la organización: ${orgId}`
+  );
   const defaultBoards = defaultBoardImages;
 
   for (const boardData of defaultBoards) {
