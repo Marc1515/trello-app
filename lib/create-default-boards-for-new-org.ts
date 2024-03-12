@@ -1,7 +1,16 @@
 import { defaultBoardImages } from "@/constants/defaultBoardImages";
 import { db } from "./db";
 
-export const createDefaultBoardsForNewOrganization = async (orgId: string) => {
+export const createDefaultBoardsForNewOrganization = async (
+  orgId: string | null | undefined
+) => {
+  if (typeof orgId !== "string") {
+    console.log(
+      "No se proporcionó un orgId válido, se cancela la creación de tableros por defecto."
+    );
+    return;
+  }
+
   console.log(
     `Iniciando la creación de tableros por defecto para la organización: ${orgId}`
   );
