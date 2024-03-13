@@ -1,33 +1,19 @@
-"use client";
-
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 
 import { Separator } from "@/components/ui/separator";
 
 import { Info } from "./_components/info";
 import { BoardList } from "./_components/board-list";
 import { checkSubscription } from "@/lib/subscription";
-import { createDefaultBoardsForNewOrganization } from "@/lib/create-default-boards-for-new-org";
+
 import { auth } from "@clerk/nextjs";
 
-const OrganizationIdPage = () => {
-  const [isPro, setIsPro] = useState(false);
-  const { userId, orgId } = auth();
+const OrganizationIdPage = async () => {
+  const isPro = await checkSubscription();
 
-  useEffect(() => {
-    async function initOrganizationSetup() {
-      // Verifica la suscripción y establece isPro
-      const isProStatus = await checkSubscription();
-      setIsPro(isProStatus);
+  const { orgId } = auth();
 
-      // Lógica para crear tableros por defecto, si es necesario
-      await createDefaultBoardsForNewOrganization(orgId);
-    }
-
-    if (orgId) {
-      initOrganizationSetup();
-    }
-  }, [orgId]);
+  console.log(orgId);
 
   return (
     <div className="w-full mb-20">
