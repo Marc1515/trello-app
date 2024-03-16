@@ -41,14 +41,13 @@ const createOrganization = async (): Promise<ReturnType> => {
       data: {
         id: orgId,
         name: "Nombre por defecto",
-        defaultBoardsCreated: false, // Asegura que esta propiedad esté en false inicialmente
+        defaultBoardsCreated: false,
       },
     });
 
-    // Crea los tableros por defecto solo si es la primera vez que se crea la organización
     if (!organization.defaultBoardsCreated) {
       await createDefaultBoards(orgId);
-      // Actualiza la organización para marcar que los tableros por defecto han sido creados
+
       await db.organization.update({
         where: { id: orgId },
         data: { defaultBoardsCreated: true },
