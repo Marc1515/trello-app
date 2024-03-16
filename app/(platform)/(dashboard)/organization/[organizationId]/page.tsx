@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { auth } from "@clerk/nextjs";
+
 import createOrganization from "@/actions/create-organization";
 
 import { Separator } from "@/components/ui/separator";
@@ -8,8 +8,6 @@ import { BoardList } from "./_components/board-list";
 import { checkSubscription } from "@/lib/subscription";
 
 const OrganizationIdPage = async () => {
-  const { orgId } = auth();
-
   const isPro = await checkSubscription();
 
   const response = await createOrganization();
