@@ -1,19 +1,23 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
+import { auth } from "@clerk/nextjs";
+import createOrganization from "@/actions/create-organization";
 
 import { Separator } from "@/components/ui/separator";
-
 import { Info } from "./_components/info";
 import { BoardList } from "./_components/board-list";
 import { checkSubscription } from "@/lib/subscription";
 
-import { auth } from "@clerk/nextjs";
-
 const OrganizationIdPage = async () => {
-  const isPro = await checkSubscription();
-
   const { orgId } = auth();
 
-  console.log(orgId);
+  const isPro = await checkSubscription();
+
+  const response = await createOrganization();
+  if (response.error) {
+    console.error("Error creating organization:", response.error);
+  } else {
+    console.log("Organization processed successfully:", response.data);
+  }
 
   return (
     <div className="w-full mb-20">
