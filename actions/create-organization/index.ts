@@ -1,41 +1,42 @@
 "use server";
 
 import { auth } from "@clerk/nextjs";
-/* import { revalidatePath } from "next/cache"; */
-
 import { db } from "@/lib/db";
-import { createSafeAction } from "@/lib/create-safe-action";
 
-import { ReturnType } from "./types";
-import { CreateOrganization } from "./schema";
+type ReturnType = {
+  error?: string;
+  data?: any;
+};
 
-const handler = async (): Promise<ReturnType> => {
+const createOrganization = async (): Promise<ReturnType> => {
   const { userId, orgId } = auth();
 
   if (!userId || !orgId) {
-    return {
-      error: "Unauthorized",
-    };
+    return { error: "Unauthorized" };
   }
 
-  let org;
+  const existingOrganization = await db.organization.findUnique({
+    where: { id: orgId },
+  });
+
+  if (existingOrganization) {
+    return { error: "Organization already exists" };
+  }
 
   try {
-    org = await db.organization.create({
+    const organization = await db.organization.create({
       data: {
         id: orgId,
-        name: "default",
+        name: "Nombre por defecto",
         defaultBoardsCreated: false,
       },
     });
-  } catch (error) {
-    return {
-      error: "Failed to create",
-    };
-  }
 
-  /* revalidatePath(`/board/${board.id}`); */
-  return { data: org };
+    return { data: organization };
+  } catch (error) {
+    console.error("Error al crear la organización:", error);
+    return { error: "Failed to create organization" };
+  }
 };
 
-export const createOrganization = createSafeAction(CreateOrganization, handler);
+export default createOrganization;
