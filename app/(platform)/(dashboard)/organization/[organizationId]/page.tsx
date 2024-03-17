@@ -6,26 +6,14 @@ import { Separator } from "@/components/ui/separator";
 import { Info } from "./_components/info";
 import { BoardList } from "./_components/board-list";
 import { checkSubscription } from "@/lib/subscription";
-import { clerkClient } from "@clerk/nextjs";
+import { getClerkOrganizations } from "@/lib/get-clerk-organizations";
 import { db } from "@/lib/db";
 
 const OrganizationIdPage = async () => {
   const isPro = await checkSubscription();
 
-  async function fetchOrganizationsFromClerk() {
-    try {
-      // Directamente devuelve un arreglo de organizaciones
-      const organizationsList =
-        await clerkClient.organizations.getOrganizationList();
-      return organizationsList.map((org) => org.id);
-    } catch (error) {
-      console.error("Error fetching organizations from Clerk:", error);
-      return []; // Retorna un arreglo vacío en caso de error
-    }
-  }
-
   async function synchronizeAndCleanOrganizations() {
-    const clerkOrgIds = await fetchOrganizationsFromClerk();
+    const clerkOrgIds = await getClerkOrganizations();
     const allLocalOrgs = await db.organization.findMany();
     const localOrgIdsToDelete = allLocalOrgs
       .filter((localOrg) => !clerkOrgIds.includes(localOrg.id))
