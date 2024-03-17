@@ -18,7 +18,7 @@ const createDefaultBoards = async (orgId: string) => {
         imageId: boardImage.id,
         imageThumbUrl: boardImage.urls.thumb,
         imageFullUrl: boardImage.urls.full,
-        imageUserName: "Default",
+        imageUserName: boardImage.user.links.html,
         imageLinkHTML: boardImage.links.html,
       },
     });
