@@ -6,42 +6,13 @@ import { Separator } from "@/components/ui/separator";
 import { Info } from "./_components/info";
 import { BoardList } from "./_components/board-list";
 import { checkSubscription } from "@/lib/subscription";
-import { getClerkOrganizations } from "@/lib/get-clerk-organizations";
-import { db } from "@/lib/db";
+
+import { deleteOrganization } from "@/actions/delete-organization";
 
 const OrganizationIdPage = async () => {
   const isPro = await checkSubscription();
 
-  async function synchronizeAndCleanOrganizations() {
-    const clerkOrgIds = await getClerkOrganizations();
-    const allLocalOrgs = await db.organization.findMany();
-    const localOrgIdsToDelete = allLocalOrgs
-      .filter((localOrg) => !clerkOrgIds.includes(localOrg.id))
-      .map((org) => org.id);
-
-    for (const orgId of localOrgIdsToDelete) {
-      // Asumiendo que deseas eliminar registros relacionados antes de eliminar la organización
-      // Eliminar tableros (u otros datos relacionados) primero
-      await db.board.deleteMany({
-        where: {
-          orgId: orgId,
-        },
-      });
-
-      // Luego, eliminar la organización
-      await db.organization.delete({
-        where: {
-          id: orgId,
-        },
-      });
-
-      console.log(
-        `Deleted organization and all related data for orgId: ${orgId}`
-      );
-    }
-  }
-
-  await synchronizeAndCleanOrganizations();
+  await deleteOrganization();
 
   const response = await createOrganization();
   if (response.error) {
