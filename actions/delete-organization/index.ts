@@ -9,8 +9,9 @@ import { createSafeAction } from "@/lib/create-safe-action";
 import { DeleteOrganization } from "./schema";
 import { InputType, ReturnType } from "./types";
 import { redirect } from "next/navigation";
+import { synchronizeOrganizations } from "../synchronize-organizations";
 
-const handler = async (data: InputType): Promise<ReturnType> => {
+export async function deleteOrganization() {
   const { userId, orgId } = auth();
 
   if (!userId || !orgId) {
@@ -19,23 +20,29 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { id } = data;
-  let organization;
-
   try {
-    organization = await db.organization.delete({
-      where: {
-        id,
-      },
-    });
+    const localOrgIdsToDelete = await synchronizeOrganizations();
+
+    for (const orgId of localOrgIdsToDelete) {
+      await db.board.deleteMany({
+        where: {
+          orgId: orgId,
+        },
+      });
+
+      await db.organization.delete({
+        where: {
+          id: orgId,
+        },
+      });
+
+      console.log(
+        `Deleted organization and all related data for orgId: ${orgId}`
+      );
+    }
   } catch (error) {
     return {
       error: "Failed to delete",
     };
   }
-
-  revalidatePath(`/organization/${orgId}`);
-  redirect(`/organization/${orgId}`);
-};
-
-export const deleteOrganization = createSafeAction(DeleteOrganization, handler);
+}
