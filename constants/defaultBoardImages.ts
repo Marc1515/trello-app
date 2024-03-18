@@ -1,6 +1,7 @@
 export const defaultBoardImages = [
   {
     id: "Hd7vwFzZpH0",
+    title_name: "Tasks",
     slug: "cat-licking-its-paw-Hd7vwFzZpH0",
     alternative_slugs: {
       en: "cat-licking-its-paw-Hd7vwFzZpH0",
@@ -163,6 +164,7 @@ export const defaultBoardImages = [
   },
   {
     id: "4Qd2KkJCXOk",
+    title_name: "Projects",
     slug: "red-rose-with-black-background-4Qd2KkJCXOk",
     alternative_slugs: {
       en: "red-rose-with-black-background-4Qd2KkJCXOk",
@@ -308,6 +310,7 @@ export const defaultBoardImages = [
   },
   {
     id: "4XXNWJJ4msg",
+    title_name: "Users",
     slug: "blue-ocean-4XXNWJJ4msg",
     alternative_slugs: {
       en: "blue-ocean-4XXNWJJ4msg",
