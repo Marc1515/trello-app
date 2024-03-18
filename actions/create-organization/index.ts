@@ -14,7 +14,7 @@ const createDefaultBoards = async (orgId: string) => {
     await db.board.create({
       data: {
         orgId: orgId,
-        title: boardImage.alt_description || "Default Board",
+        title: boardImage.title_name || "Default Board",
         imageId: boardImage.id,
         imageThumbUrl: boardImage.urls.thumb,
         imageFullUrl: boardImage.urls.full,
