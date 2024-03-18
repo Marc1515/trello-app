@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import { defaultBoardImages } from "@/constants/defaultBoardImages";
 
+import { incrementAvaibleCount } from "@/lib/org-limit";
+
 type ReturnType = {
   error?: string;
   data?: any;
@@ -22,6 +24,7 @@ const createDefaultBoards = async (orgId: string) => {
         imageLinkHTML: boardImage.links.html,
       },
     });
+    await incrementAvaibleCount();
   }
 };
 
