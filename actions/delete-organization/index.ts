@@ -24,7 +24,7 @@ export async function deleteOrganization() {
     const localOrgIdsToDelete = await synchronizeOrganizations();
 
     for (const orgId of localOrgIdsToDelete) {
-      await db.orgLimit.deleteMany({
+      await db.orgLimit.delete({
         where: {
           orgId: orgId,
         },
