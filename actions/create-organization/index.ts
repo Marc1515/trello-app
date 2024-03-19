@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import { defaultBoardImages } from "@/constants/defaultBoardImages";
 
@@ -35,6 +35,12 @@ const createOrganization = async (): Promise<ReturnType> => {
     return { error: "Unauthorized" };
   }
 
+  const organizationId = orgId as string;
+
+  const organizationObject = await clerkClient.organizations.getOrganization({
+    organizationId,
+  });
+
   let organization = await db.organization.findUnique({
     where: { id: orgId },
   });
@@ -43,7 +49,7 @@ const createOrganization = async (): Promise<ReturnType> => {
     organization = await db.organization.create({
       data: {
         id: orgId,
-        name: "Nombre por defecto",
+        name: organizationObject.name,
         defaultBoardsCreated: false,
       },
     });
