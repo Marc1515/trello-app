@@ -40,6 +40,7 @@ export const Navbar = () => {
           afterCreateOrganizationUrl={"/organization/:id"}
           afterLeaveOrganizationUrl={"/select-org"}
           afterSelectPersonalUrl={"/organization/:id"}
+          afterSelectOrganizationUrl={"/organization/:id"}
           appearance={{
             elements: {
               rootBox: {
