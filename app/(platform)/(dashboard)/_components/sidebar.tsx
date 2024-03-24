@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
 
 import { NavItem, Organization } from "./nav-item";
+import { useEffect } from "react";
 
 interface SidebarProps {
   storageKey?: string;
@@ -29,6 +30,18 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
       infinite: true,
     },
   });
+
+  useEffect(() => {
+    if (activeOrganization?.id) {
+      setExpanded((currExpanded) => ({
+        ...Object.keys(currExpanded).reduce(
+          (acc, key) => ({ ...acc, [key]: false }),
+          {}
+        ),
+        [activeOrganization.id]: true,
+      }));
+    }
+  }, [activeOrganization?.id, setExpanded]);
 
   const defaultAccordionValue: string[] = Object.keys(expanded ?? {}).reduce(
     (acc: string[], key: string) => {
