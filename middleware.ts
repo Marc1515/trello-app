@@ -1,13 +1,21 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-// This example protects all routes including api/trpc routes
-// Please edit this to allow other routes to be public as needed.
-// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware
+// Define el tipo Auth para incluir posibles valores nulos y undefined
+interface Auth {
+  userId: string | null;
+  orgId: string | null | undefined;
+  isPublicRoute: boolean;
+  isApiRoute: boolean;
+}
+
 export default authMiddleware({
   publicRoutes: ["/", "/api/webhook"],
 
-  afterAuth(auth, req) {
+  async afterAuth(auth: Auth, req: NextRequest) {
+    console.log("Auth details:", auth);
+    console.log("Request URL:", req.url);
+
     if (auth.userId && auth.isPublicRoute) {
       let path = "/select-org";
 
@@ -17,6 +25,7 @@ export default authMiddleware({
       const orgSelection = new URL(path, req.url);
       return NextResponse.redirect(orgSelection);
     }
+
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
@@ -25,6 +34,8 @@ export default authMiddleware({
       const orgSelection = new URL("/select-org", req.url);
       return NextResponse.redirect(orgSelection);
     }
+
+    return NextResponse.next();
   },
 });
 
