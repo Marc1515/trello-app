@@ -1,0 +1,22 @@
+services:
+  trello-app:
+    build: .
+    container_name: trello-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-proxy"
+
+      - "traefik.http.routers.trello.rule=Host(`trello.marcespana.com`)"
+      - "traefik.http.routers.trello.entrypoints=websecure"
+      - "traefik.http.routers.trello.tls.certresolver=letsencrypt"
+
+      - "traefik.http.services.trello.loadbalancer.server.port=3000"
+
+networks:
+  traefik-proxy:
+    external: true
