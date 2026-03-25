@@ -5,18 +5,37 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    depends_on:
+      - trello-postgres
     networks:
+      - trello-network
       - traefik-proxy
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-proxy"
-
       - "traefik.http.routers.trello.rule=Host(`trello.marcespana.com`)"
       - "traefik.http.routers.trello.entrypoints=websecure"
       - "traefik.http.routers.trello.tls.certresolver=letsencrypt"
-
       - "traefik.http.services.trello.loadbalancer.server.port=3000"
 
+  trello-postgres:
+    image: postgres:16-alpine
+    container_name: trello-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trello_user
+      POSTGRES_PASSWORD: cambia_esta_password
+      POSTGRES_DB: trello_db
+    volumes:
+      - trello_postgres_data:/var/lib/postgresql/data
+    networks:
+      - trello-network
+
+volumes:
+  trello_postgres_data:
+
 networks:
+  trello-network:
+    driver: bridge
   traefik-proxy:
     external: true
