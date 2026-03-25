@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: trello_user
-      POSTGRES_PASSWORD: cambia_esta_password
+      POSTGRES_PASSWORD: trello19118362
       POSTGRES_DB: trello_db
     volumes:
       - trello_postgres_data:/var/lib/postgresql/data
