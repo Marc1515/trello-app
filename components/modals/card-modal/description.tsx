@@ -27,7 +27,7 @@ export const Description = ({ data }: DescriptionProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const textareaRef = useRef<ElementRef<"textarea">>(null);
-  const formRef = useRef<ElementRef<"form">>(null);
+  const formRef = useRef<ElementRef<"form">>(null!);
 
   const enableEditing = () => {
     setIsEditing(true);

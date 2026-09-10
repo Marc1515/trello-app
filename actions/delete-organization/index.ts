@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 import { synchronizeOrganizations } from "../synchronize-organizations";
 
 export async function deleteOrganization() {
-  const { userId, orgId } = auth();
+  const { userId, orgId } = await auth();
 
   if (!userId || !orgId) {
     return {
