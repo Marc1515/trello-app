@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { HelpCircle, User2 } from "lucide-react";
 
@@ -14,7 +14,7 @@ import { checkSubscription } from "@/lib/subscription";
 import { BoardOptions } from "../../../board/[boardId]/_components/board-options";
 
 export const BoardList = async () => {
-  const { orgId } = auth();
+  const { orgId } = await auth();
 
   if (!orgId) {
     return redirect("/select-org");

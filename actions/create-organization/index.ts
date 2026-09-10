@@ -1,6 +1,6 @@
 "use server";
 
-import { auth, clerkClient } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { defaultBoardImages } from "@/constants/defaultBoardImages";
 
@@ -29,7 +29,7 @@ const createDefaultBoards = async (orgId: string) => {
 };
 
 const createOrganization = async (): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId, orgId } = await auth();
 
   if (!userId || !orgId) {
     return { error: "Unauthorized" };
@@ -37,7 +37,8 @@ const createOrganization = async (): Promise<ReturnType> => {
 
   const organizationId = orgId as string;
 
-  const organizationObject = await clerkClient.organizations.getOrganization({
+  const client = await clerkClient();
+  const organizationObject = await client.organizations.getOrganization({
     organizationId,
   });
 
