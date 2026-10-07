@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 export async function GET(
   req: Request,
@@ -15,7 +15,7 @@ export async function GET(
       return new NextResponse("Unauthorised", { status: 401 });
     }
 
-    const card = await db.card.findUnique({
+    const card = await getDb().card.findUnique({
       where: {
         id: cardId,
         list: {

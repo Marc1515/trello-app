@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { HelpCircle, User2 } from "lucide-react";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { Hint } from "@/components/hint";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FormPopover } from "@/components/form/form-popover";
@@ -20,7 +20,7 @@ export const BoardList = async () => {
     return redirect("/select-org");
   }
 
-  const boards = await db.board.findMany({
+  const boards = await getDb().board.findMany({
     where: {
       orgId,
     },

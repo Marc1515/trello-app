@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 
-import { List } from "@prisma/client";
+import { List } from "@/generated/prisma/browser";
 import { useEventListener } from "usehooks-ts";
 import { useState, useEffect, ElementRef, useRef } from "react";
 

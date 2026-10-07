@@ -2,9 +2,9 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { createAuditLog } from "@/lib/create-audit-log";
 
@@ -12,7 +12,7 @@ import { StripeRedirect } from "./schema";
 import { InputType, ReturnType } from "./types";
 
 import { absoluteUrl } from "@/lib/utils";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -29,21 +29,21 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let url = "";
 
   try {
-    const orgSubscription = await db.orgSubscription.findUnique({
+    const orgSubscription = await getDb().orgSubscription.findUnique({
       where: {
         orgId,
       },
     });
 
     if (orgSubscription && orgSubscription.stripeCustomerId) {
-      const stripeSession = await stripe.billingPortal.sessions.create({
+      const stripeSession = await getStripe().billingPortal.sessions.create({
         customer: orgSubscription.stripeCustomerId,
         return_url: settingsUrl,
       });
 
       url = stripeSession.url;
     } else {
-      const stripeSession = await stripe.checkout.sessions.create({
+      const stripeSession = await getStripe().checkout.sessions.create({
         success_url: settingsUrl,
         cancel_url: settingsUrl,
         payment_method_types: ["card"],

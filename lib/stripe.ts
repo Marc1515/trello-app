@@ -1,6 +1,15 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
-  apiVersion: "2023-10-16",
-  typescript: true,
-});
+let stripe: Stripe | undefined;
+
+export const getStripe = () => {
+  if (!stripe) {
+    const apiKey = process.env.STRIPE_API_KEY;
+    if (!apiKey) throw new Error("STRIPE_API_KEY is required to initialize Stripe");
+    stripe = new Stripe(apiKey, {
+      apiVersion: "2023-10-16",
+      typescript: true,
+    });
+  }
+  return stripe;
+};

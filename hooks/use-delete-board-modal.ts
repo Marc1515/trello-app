@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { Board } from "@prisma/client";
+import { Board } from "@/generated/prisma/browser";
 
 type DeleteBoardModalStore = {
   data?: Board;

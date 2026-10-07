@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { UpdateCardOrder } from "./schema";
@@ -23,7 +23,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   try {
     const transaction = items.map((card) =>
-      db.card.update({
+      getDb().card.update({
         where: {
           id: card.id,
           list: {
@@ -39,7 +39,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       })
     );
 
-    updatedCards = await db.$transaction(transaction);
+    updatedCards = await getDb().$transaction(transaction);
   } catch (error) {
     return {
       error: "Failed to reorder.",

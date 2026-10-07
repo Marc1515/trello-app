@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { ActivityItem } from "@/components/activity-item";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -12,7 +12,7 @@ export const ActivityList = async () => {
     redirect("/select-org");
   }
 
-  const auditLogs = await db.auditLog.findMany({
+  const auditLogs = await getDb().auditLog.findMany({
     where: {
       orgId,
     },

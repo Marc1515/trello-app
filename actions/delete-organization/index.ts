@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { DeleteOrganization } from "./schema";
@@ -24,19 +24,19 @@ export async function deleteOrganization() {
     const localOrgIdsToDelete = await synchronizeOrganizations();
 
     for (const orgId of localOrgIdsToDelete) {
-      await db.orgLimit.delete({
+      await getDb().orgLimit.delete({
         where: {
           orgId: orgId,
         },
       });
 
-      await db.board.deleteMany({
+      await getDb().board.deleteMany({
         where: {
           orgId: orgId,
         },
       });
 
-      await db.organization.delete({
+      await getDb().organization.delete({
         where: {
           id: orgId,
         },

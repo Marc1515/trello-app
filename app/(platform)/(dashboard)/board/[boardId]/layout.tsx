@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { BoardNavbar } from "./_components/board-navbar";
 
 export async function generateMetadata({
@@ -17,7 +17,7 @@ export async function generateMetadata({
     };
   }
 
-  const board = await db.board.findUnique({
+  const board = await getDb().board.findUnique({
     where: {
       id: boardId,
       orgId,
@@ -43,7 +43,7 @@ const BoardIdLayout = async ({
     redirect("/select-org");
   }
 
-  const board = await db.board.findUnique({
+  const board = await getDb().board.findUnique({
     where: {
       id: boardId,
       orgId,

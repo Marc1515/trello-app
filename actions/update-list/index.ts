@@ -3,13 +3,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { UpdateList } from "./schema";
 import { InputType, ReturnType } from "./types";
 import { createAuditLog } from "@/lib/create-audit-log";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -24,7 +24,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let list;
 
   try {
-    list = await db.list.update({
+    list = await getDb().list.update({
       where: {
         id,
         boardId,

@@ -2,8 +2,8 @@ import Stripe from "stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { db } from "@/lib/db";
-import { stripe } from "@/lib/stripe";
+import { getDb } from "@/lib/db";
+import { getStripe } from "@/lib/stripe";
 import { createDefaultBoardsForNewOrganization } from "@/lib/create-default-boards-for-new-org";
 
 export async function POST(req: Request) {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   const session = event.data.object as Stripe.Checkout.Session;
 
   if (event.type === "checkout.session.completed") {
-    const subscription = await stripe.subscriptions.retrieve(
+    const subscription = await getStripe().subscriptions.retrieve(
       session.subscription as string
     );
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       return new NextResponse("Org ID is required", { status: 400 });
     }
 
-    await db.orgSubscription.create({
+    await getDb().orgSubscription.create({
       data: {
         orgId: session?.metadata?.orgId,
         stripeSupscriptionId: subscription.id,
@@ -46,11 +46,11 @@ export async function POST(req: Request) {
     });
   }
   if (event.type === "invoice.payment_succeeded") {
-    const subscription = await stripe.subscriptions.retrieve(
+    const subscription = await getStripe().subscriptions.retrieve(
       session.subscription as string
     );
 
-    await db.orgSubscription.update({
+    await getDb().orgSubscription.update({
       where: {
         stripeSupscriptionId: subscription.id,
       },

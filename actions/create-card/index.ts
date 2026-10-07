@@ -2,9 +2,9 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { createSafeAction } from "@/lib/create-safe-action";
 
@@ -24,7 +24,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let card;
 
   try {
-    const list = await db.list.findUnique({
+    const list = await getDb().list.findUnique({
       where: {
         id: listId,
         board: {
@@ -37,7 +37,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       return { error: "List not found" };
     }
 
-    const lastCard = await db.card.findFirst({
+    const lastCard = await getDb().card.findFirst({
       where: { listId },
       orderBy: { order: "desc" },
       select: { order: true },
@@ -45,7 +45,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const newOrder = lastCard ? lastCard.order + 1 : 1;
 
-    card = await db.card.create({
+    card = await getDb().card.create({
       data: {
         title,
         listId,

@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 
-import { List } from "@prisma/client";
+import { List } from "@/generated/prisma/browser";
 import { ElementRef, useRef } from "react";
 import { MoreHorizontal, X } from "lucide-react";
 

@@ -2,7 +2,8 @@
 
 import { Menu } from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useIsClient } from "@/hooks/use-is-client";
 import { usePathname } from "next/navigation";
 
 import { useMobileSidebar } from "@/hooks/use-mobile-sidebar";
@@ -13,15 +14,11 @@ import { Sidebar } from "./sidebar";
 
 export const MobileSidebar = () => {
   const pathname = usePathname();
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useIsClient();
 
   const onOpen = useMobileSidebar((state) => state.onOpen);
   const onClose = useMobileSidebar((state) => state.onClose);
   const isOpen = useMobileSidebar((state) => state.isOpen);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     onClose();

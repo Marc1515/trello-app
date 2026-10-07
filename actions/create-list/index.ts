@@ -3,13 +3,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { CreateList } from "./schema";
 import { InputType, ReturnType } from "./types";
 import { createAuditLog } from "@/lib/create-audit-log";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -24,7 +24,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let list;
 
   try {
-    const board = await db.board.findUnique({
+    const board = await getDb().board.findUnique({
       where: {
         id: boardId,
         orgId,
@@ -35,7 +35,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       return { error: "Board not found!" };
     }
 
-    const lastList = await db.list.findFirst({
+    const lastList = await getDb().list.findFirst({
       where: {
         boardId: boardId,
       },
@@ -45,7 +45,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const newOrder = lastList ? lastList.order + 1 : 1;
 
-    list = await db.list.create({
+    list = await getDb().list.create({
       data: {
         title,
         boardId,

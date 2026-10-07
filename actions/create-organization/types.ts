@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Organization } from "@prisma/client";
+import { Organization } from "@/generated/prisma/browser";
 
 import { ActionState } from "@/lib/create-safe-action";
 

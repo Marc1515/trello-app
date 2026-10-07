@@ -1,7 +1,7 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { defaultBoardImages } from "@/constants/defaultBoardImages";
 
 import { incrementAvaibleCount } from "@/lib/org-limit";
@@ -13,7 +13,7 @@ type ReturnType = {
 
 const createDefaultBoards = async (orgId: string) => {
   for (const boardImage of defaultBoardImages) {
-    await db.board.create({
+    await getDb().board.create({
       data: {
         orgId: orgId,
         title: boardImage.title_name || "Default Board",
@@ -42,12 +42,12 @@ const createOrganization = async (): Promise<ReturnType> => {
     organizationId,
   });
 
-  let organization = await db.organization.findUnique({
+  let organization = await getDb().organization.findUnique({
     where: { id: orgId },
   });
 
   if (!organization) {
-    organization = await db.organization.create({
+    organization = await getDb().organization.create({
       data: {
         id: orgId,
         name: organizationObject.name,
@@ -58,7 +58,7 @@ const createOrganization = async (): Promise<ReturnType> => {
     if (!organization.defaultBoardsCreated) {
       await createDefaultBoards(orgId);
 
-      await db.organization.update({
+      await getDb().organization.update({
         where: { id: orgId },
         data: { defaultBoardsCreated: true },
       });

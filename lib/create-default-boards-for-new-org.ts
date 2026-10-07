@@ -1,5 +1,5 @@
 import { defaultBoardImages } from "@/constants/defaultBoardImages";
-import { db } from "./db";
+import { getDb } from "./db";
 
 export const createDefaultBoardsForNewOrganization = async (
   orgId: string | null | undefined
@@ -25,7 +25,7 @@ export const createDefaultBoardsForNewOrganization = async (
     } = boardData;
 
     try {
-      const board = await db.board.create({
+      const board = await getDb().board.create({
         data: {
           title,
           orgId,

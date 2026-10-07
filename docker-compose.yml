@@ -5,8 +5,13 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     depends_on:
-      - trello-postgres
+      trello-postgres:
+        condition: service_healthy
     networks:
       - trello-network
       - traefik-proxy
@@ -22,9 +27,17 @@ services:
     image: postgres:16-alpine
     container_name: trello-postgres
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     environment:
       POSTGRES_USER: trello_user
-      POSTGRES_PASSWORD: trello19118362
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: trello_db
     volumes:
       - trello_postgres_data:/var/lib/postgresql/data
@@ -37,5 +50,6 @@ volumes:
 networks:
   trello-network:
     driver: bridge
+    internal: true
   traefik-proxy:
     external: true

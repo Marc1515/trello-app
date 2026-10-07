@@ -2,9 +2,9 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { createAuditLog } from "@/lib/create-audit-log";
 
@@ -24,7 +24,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let card;
 
   try {
-    const cardToCopy = await db.card.findUnique({
+    const cardToCopy = await getDb().card.findUnique({
       where: {
         id,
         list: {
@@ -35,7 +35,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     if (!cardToCopy) return { error: "Card not found" };
 
-    const lastCard = await db.card.findFirst({
+    const lastCard = await getDb().card.findFirst({
       where: { listId: cardToCopy.listId },
       orderBy: { order: "desc" },
       select: { order: true },
@@ -43,7 +43,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const newOrder = lastCard ? lastCard.order + 1 : 1;
 
-    card = await db.card.create({
+    card = await getDb().card.create({
       data: {
         title: `${cardToCopy.title} - Copy`,
         description: cardToCopy.description,

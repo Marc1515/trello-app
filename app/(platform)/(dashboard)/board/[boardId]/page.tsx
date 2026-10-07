@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { ListContainer } from "./_components/list-container";
 
@@ -18,7 +18,7 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
     redirect("/select-org");
   }
 
-  const lists = await db.list.findMany({
+  const lists = await getDb().list.findMany({
     where: {
       boardId,
       board: {

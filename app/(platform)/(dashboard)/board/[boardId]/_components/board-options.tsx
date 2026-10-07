@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/popover";
 
 import { useDeleteBoardModal } from "@/hooks/use-delete-board-modal";
-import { Board } from "@prisma/client";
+import { Board } from "@/generated/prisma/browser";
 
 interface BoardOptionsProps {
   data: Board;

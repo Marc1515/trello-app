@@ -3,13 +3,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { InputType, ReturnType } from "./types";
 import { CreateBoard } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 import { incrementAvaibleCount, hasAvailableCount } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
 
@@ -49,7 +49,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let board;
 
   try {
-    board = await db.board.create({
+    board = await getDb().board.create({
       data: {
         title,
         orgId,

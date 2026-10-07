@@ -1,7 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { ACTION, ENTITY_TYPE } from "@/generated/prisma/browser";
 
-import { db } from "./db";
+import { getDb } from "./db";
 
 interface Props {
   entityId: string;
@@ -21,7 +21,7 @@ export const createAuditLog = async (props: Props) => {
 
     const { entityId, entityType, entityTitle, action } = props;
 
-    await db.auditLog.create({
+    await getDb().auditLog.create({
       data: {
         orgId,
         entityId,
