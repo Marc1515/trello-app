@@ -53,6 +53,10 @@ PostCSS and Tailwind configuration use ESM; Next uses the automatic JSX runtime.
 
 ## Docker hardening
 
+VPS Docker validation found that the generated Prisma Client was missing from the
+runtime image. The runner now copies `generated/prisma` from the builder stage
+with `node:node` ownership, preserving the configured generator output.
+
 - All stages use `node:22-slim`; schema/config are available before `npm ci`.
 - Build generates Prisma and runs `npm run build`.
 - The final image uses `USER node`, appropriate `COPY --chown=node:node`, and
@@ -86,8 +90,9 @@ alone does not populate an already-built browser bundle.
   0 critical. Review them separately; `audit fix --force` was not used.
 - The final image still contains the build dependency tree, including development
   tools; production dependency pruning remains a separate improvement.
-- Validate the Node 22 Docker image on the DEV VPS. Local checks used Node 24.15.0;
-  a Docker build/start has not yet been validated.
+- VPS Docker build passed with Node 22.23.3, Next 16.3.8, and user `node` (UID 1000).
+  Rebuild the corrected image and verify `/app/generated/prisma` is present;
+  runtime startup validation remains pending. Local checks used Node 24.15.0.
 - Real smoke tests remain pending for authentication, boards/lists/cards, Clerk,
   Stripe, and subscriptions. Also verify PostgreSQL connection/pool behavior with
   the new driver; the configured connection timeout is 5 seconds.
